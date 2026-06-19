@@ -146,7 +146,10 @@
               <a href="https://scholar.google.com/citations?user=ostlXS8AAAAJ&hl=en">Google Scholar</a>
             </div>
           </div>
-          <form class="contact-form" data-contact-form>
+          <form class="contact-form" data-contact-form action="https://formsubmit.co/abdul.moktadir@connect.polyu.hk" method="POST">
+            <input type="hidden" name="_subject" value="New message from academic website" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_next" value="https://abdulmoktadir.github.io/#contact" />
             <label><span>Name</span><input name="name" required autocomplete="name" /></label>
             <label><span>Email</span><input name="email" type="email" required autocomplete="email" /></label>
             <label><span>Topic</span><select name="topic"><option>Research collaboration</option><option>Graduate supervision</option><option>Editorial invitation</option><option>Speaking request</option></select></label>
@@ -164,5 +167,6 @@
     </footer>
 
     <script src="app.js"></script>
+    <script src="contact-form.js"></script>
   </body>
 </html>
