@@ -1,5 +1,3 @@
-const CONTACT_EMAIL = "abdul.moktadir@connect.polyu.hk";
-const CONTACT_FORM_ENDPOINT = `https://formsubmit.co/ajax/${CONTACT_EMAIL}`;
 const STORAGE_KEY = "abdul-site-imported-publications";
 
 const projects = [
@@ -205,7 +203,7 @@ async function importPublicationByDoi(form, note) {
     return;
   }
   note.textContent = "Looking up DOI metadata...";
-  const response = await fetch(`https://api.crossref.org/works/${encodeURIComponent(doi)}?mailto=${encodeURIComponent(CONTACT_EMAIL)}`);
+  const response = await fetch(`https://api.crossref.org/works/${encodeURIComponent(doi)}?mailto=abdul.moktadir%40connect.polyu.hk`);
   if (!response.ok) throw new Error(`Crossref returned ${response.status}`);
   const item = (await response.json()).message;
   const publication = {
@@ -288,37 +286,23 @@ function setupDoiImport() {
 function setupContactForm() {
   const form = $("[data-contact-form]");
   const note = $("[data-form-note]");
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
+  if (!form) return;
+
+  form.addEventListener("submit", () => {
     const data = new FormData(form);
-    const payload = {
-      name: data.get("name"),
-      email: data.get("email"),
-      topic: data.get("topic"),
-      message: data.get("message"),
-      _subject: `${data.get("topic")} from ${data.get("name")}`,
-      _template: "table",
-      _captcha: "false"
-    };
-    const button = form.querySelector('button[type="submit"]');
-    button.disabled = true;
-    note.textContent = "Sending...";
-    try {
-      const response = await fetch(CONTACT_FORM_ENDPOINT, {
-        method: "POST",
-        headers: { Accept: "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      if (!response.ok) throw new Error(`Message endpoint returned ${response.status}`);
-      form.reset();
-      note.textContent = "Message sent. Thank you.";
-    } catch (error) {
-      const subject = encodeURIComponent(payload._subject);
-      const body = encodeURIComponent(`${payload.message}\n\nReply to: ${payload.email}`);
-      note.innerHTML = `Automatic sending is not ready yet: <a href="mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}">Open email draft</a>`;
-    } finally {
-      button.disabled = false;
+    const subject = form.querySelector('input[name="_subject"]');
+    let replyTo = form.querySelector('input[name="_replyto"]');
+
+    if (!replyTo) {
+      replyTo = document.createElement("input");
+      replyTo.type = "hidden";
+      replyTo.name = "_replyto";
+      form.appendChild(replyTo);
     }
+
+    if (subject) subject.value = `${data.get("topic")} from ${data.get("name")}`;
+    replyTo.value = data.get("email") || "";
+    if (note) note.textContent = "Submitting securely. If this is the first message, confirm the FormSubmit email in your inbox or spam folder.";
   });
 }
 
