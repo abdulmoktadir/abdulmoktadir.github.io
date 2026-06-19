@@ -1,0 +1,64 @@
+.admin-panel {
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  margin-bottom: 1.2rem;
+  padding: 1rem;
+}
+
+.admin-panel h3,
+.admin-panel p {
+  margin-bottom: 0;
+}
+
+.admin-panel-heading,
+.admin-toolbar {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.admin-login {
+  align-items: end;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(14rem, 1fr) auto;
+  margin-top: 1rem;
+}
+
+.admin-actions,
+.publication-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  justify-content: flex-end;
+}
+
+.publication-actions {
+  align-items: center;
+}
+
+.mini-button.danger {
+  background: rgba(183, 91, 73, 0.12);
+  border-color: rgba(183, 91, 73, 0.35);
+  color: var(--rust);
+}
+
+@media (max-width: 760px) {
+  .admin-panel-heading,
+  .admin-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-login {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-actions,
+  .publication-actions {
+    justify-content: flex-start;
+  }
+}
